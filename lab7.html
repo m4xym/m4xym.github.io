@@ -1,0 +1,91 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Лабораторна робота 4</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <h1 class="center">Функціональне програмування</h1>
+      <h2 class="center">Факультет інформаційних технологій</h2>
+      <h2 class="center">Кафедра програмних систем та технологій</h2>
+      <br /><br /><br />
+      <div class="box">
+        <h1 class="center">Лабораторна робота 7</h1>
+        <h2 class="center">
+            Обробка рядків та файлів мовами функціонального програмування
+        </h2>
+      </div>
+      <br /><br /><br />
+      <h2 class="right">Примачук Максим Григорович</h2>
+      <h2 class="right">Група: ІПЗ-44мс</h2>
+      <h2 class="right">Викладач: Ніколаєнко А.Ю.</h2>
+      <h2 class="center">2023</h2>
+      <br /><br /><br />
+      <div class="box">
+        <h2 class="left">Мета</h2>
+        <p>
+            Опанувати теоретичні основи обробки рядків та текстових файлів мовами
+            функціонального програмування та розробити програми їх реалізації
+        </p>
+        <h2 class="center">Варіант 8</h2>
+        <img src="images/lab7/1.png" alt="Варіант 8" />
+        <h2 class="left">Хід роботи</h2>
+        <h4>Код</h4>
+        <a href="https://www.jdoodle.com/a/6XR5">Посилання</a>
+        <pre>
+            #lang scheme
+
+            (define (write-sentences filename sentences)
+            (with-output-to-file filename
+                (lambda ()
+                (for-each (lambda (sentence)
+                            (display sentence)
+                            (display ".\n"))
+                            sentences))))
+
+            (define (read-sentences-from-file filename)
+            (with-input-from-file filename
+                (lambda ()
+                (let loop ((lines '()))
+                    (let ((line (read-line)))
+                    (if (eof-object? line)
+                        (reverse lines)
+                        (loop (cons line lines))))))))
+
+            (define (sort-words sentence)
+            (string-join
+            (sort (string-split sentence)
+                    (lambda (a b)
+                    (> (string-length a) (string-length b))))
+            " "))
+
+            (define (write-sorted filename sentences)
+            (with-output-to-file filename
+                (lambda ()
+                (for-each (lambda (sentence)
+                            (display (sort-words sentence))
+                            (display ".\n"))
+                            sentences))))
+
+            (define sentences '("Вважається, що Веста є другим об'єктом у поясі астероїдів за масою та за об'ємом після карликової планети Церери"
+                                "Для наземного спостерігача Веста є найяскравішим астероїдом"
+                                "Веста була четвертим відкритим астероїдом, цим і зумовлений номер 4 у його офіційному позначенні"))
+            (write-sentences "E:\\Projects\\Scheme\\Newfolder\\sentences.txt" sentences)
+            (define read-sentences (read-sentences-from-file "E:\\Projects\\Scheme\\Newfolder\\sentences.txt"))
+            (display read-sentences)
+            (write-sorted "E:\\Projects\\Scheme\\Newfolder\\sorted_sentences.txt" read-sentences)
+        </pre>
+        <h4>Результат</h4>
+        <img src="images/lab7/2.png" alt="Завдання 1" />
+        <img src="images/lab7/3.png" alt="Завдання 1" />
+        <img src="images/lab7/4.png" alt="Завдання 1" />
+        <h2 class="left">Висновок</h2>
+        <p>
+          При виконанні лабораторної роботи створено функції, за допомогою яких здійснюється запис/ 
+          читання текстових файлів та сортування слів тексту за кількістю слів.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

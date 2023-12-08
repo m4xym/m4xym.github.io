@@ -1,0 +1,215 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Лабораторна робота 4</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <h1 class="center">Функціональне програмування</h1>
+      <h2 class="center">Факультет інформаційних технологій</h2>
+      <h2 class="center">Кафедра програмних систем та технологій</h2>
+      <br /><br /><br />
+      <div class="box">
+        <h1 class="center">Лабораторна робота 5</h1>
+        <h2 class="center">
+          Обробка раціональних та комплексних чисел мовами функціонального
+          програмування
+        </h2>
+      </div>
+      <br /><br /><br />
+      <h2 class="right">Примачук Максим Григорович</h2>
+      <h2 class="right">Група: ІПЗ-44мс</h2>
+      <h2 class="right">Викладач: Ніколаєнко А.Ю.</h2>
+      <h2 class="center">2023</h2>
+      <br /><br /><br />
+      <div class="box">
+        <h2 class="left">Мета</h2>
+        <p>
+          Опанувати технологію абстракції даних в мовах функціонального
+          програмування. Реалізувати програму обробки раціональних та
+          комплексних чисел мовами функціонального програмування, представивши
+          ці числа конструкціями типу «пара»
+        </p>
+        <h2 class="center">Варіант 8</h2>
+        <img src="images/lab5/1.png" alt="Варіант 8" />
+        <img src="images/lab5/2.png" alt="Варіант 8" />
+        <h2 class="left">Хід роботи</h2>
+        <h3 class="left">Завдання 1</h3>
+        <h4>Код</h4>
+        <a href="https://www.jdoodle.com/a/6XQd">Посилання</a>
+        <pre>
+            #lang scheme
+
+            (define (cup coffee milk)
+            (begin
+                (display "coffee: ")
+                (print-rational coffee)
+                (newline)
+                (display "milk ")
+                (print-rational milk)
+                (newline)))
+
+            (define (drink coffee milk amount milk-acc)
+            (define (stats)
+                (if (equal-rational? amount (make-rational 1 1))
+                    (begin
+                    (print-rational amount)
+                    (display " cup consumed")
+                    (newline)
+                    (display "total coffee: ")
+                    (print-rational (make-rational 1 1))
+                    (newline)
+                    (display "total milk ")
+                    (print-rational milk-acc)
+                    (newline))
+                    (begin
+                    (print-rational amount)
+                    (display " cup consumed")
+                    (newline)
+                    (display "added ")
+                    (print-rational amount)
+                    (display " milk")
+                    (newline)))
+                )
+            (if (equal-rational? coffee (make-rational 0 1))
+                (display "cup is empty")
+                (begin
+                    (cup coffee milk)
+                    (cond
+                    ((equal-rational? milk (make-rational 0 1))
+                    (begin
+                        (stats)
+                        (drink (sub-rational coffee amount) (add-rational milk amount) (add-rational amount (make-rational 1 6)) (add-rational milk-acc amount))))
+                    ((equal-rational? amount (make-rational 1 2))
+                    (begin
+                        (print-rational amount)
+                        (display " cup consumed")
+                        (newline)
+                        (drink (sub-rational coffee (mul-rational coffee amount)) (add-rational (sub-rational milk (mul-rational milk amount)) amount) (add-rational amount (make-rational 1 2)) (add-rational milk-acc amount))))
+                    (else
+                    (begin
+                        (stats)
+                        (drink (sub-rational coffee (mul-rational coffee amount)) (add-rational (sub-rational milk (mul-rational milk amount)) amount) (add-rational amount (make-rational 1 6)) (add-rational milk-acc amount))))))))
+
+
+            (define (numer x) (car x))
+            (define (denom x) (cdr x))
+
+            (define (make-rational n d)
+            (let ((nod (gcd n d)))
+                (cons (/ n nod) (/ d nod))))
+
+            (define(print-rational x)
+            (newline)
+            (display (numer x))
+            (display "/")
+            (display (denom x)))
+
+
+            (define (add-rational x y)
+            (make-rational (+ (* (numer x) (denom y)
+                            )
+                        (* (numer y) (denom x)
+                            )
+                        )
+                        (* (denom x) (denom y)
+                        )
+                        )
+            )
+
+            (define (sub-rational x y)
+            (make-rational (- (* (numer x) (denom y))
+                        (* (numer y) (denom x)))
+                        (* (denom x) (denom y))))
+
+            (define (div-rational x y)
+            (make-rational (* (numer x) (denom y))
+                        (* (denom x) (numer y))))
+
+            (define (mul-rational x y)
+            (make-rational (* (numer x) (numer y))
+                        (* (denom x) (denom y))))
+
+            (define (equal-rational? x y)
+            (= (* (numer x) (denom y))
+                (* (numer y) (denom x))))
+
+            (drink (make-rational 1 1) (make-rational 0 1) (make-rational 1 6) (make-rational 0 1))
+
+        </pre>
+        <h4>Результат</h4>
+        <img src="images/lab5/3.png" alt="Завдання 1" />
+        <img src="images/lab5/4.png" alt="Завдання 1" />
+        <h3 class="left">Завдання 2</h3>
+        <h4>Код</h4>
+        <a href="https://www.jdoodle.com/a/6XQh">Посилання</a>
+        <pre>
+            #lang scheme
+
+            (define (real-part z) (car z))
+            (define (imag-part z) (cdr z))
+
+            ; r = sqrt(a^2 + b^2)
+            (define (magnitude z)
+            (sqrt (+ (sqr (real-part z)) (sqr (imag-part z)))))
+
+            ; arctan(b / a)
+            (define (angle z)
+            (atan (imag-part z) (real-part z)))
+
+
+            (display "abs(z): 1")
+            (newline)
+            (display "arg(z): 2")
+            (newline)
+            (display "|z + a + bi| = r: 3")
+            (newline)
+            (define param (read))
+            (newline)
+
+            (cond
+            ((= param 1)
+            (begin
+                (display "Введіть |z|")
+                (newline)
+                (define r (read))
+                (display "г.м.т. – коло радіуса ")
+                (display r)
+                (display " з центром (0, 0)")))
+            ((= param 2)
+            (begin
+                (display "Введіть arg(z)")
+                (newline)
+                (define arg (read))
+                (display "г.м.т. – промінь під кутом ")
+                (display arg)
+                (display " з точки (0, 0)")))
+            ((= param 3)
+            (begin
+                (display "Введіть a")
+                (newline)
+                (define a (read))
+                (display "Введіть b")
+                (newline)
+                (define b (read))
+                (display "Введіть |z|")
+                (newline)
+                (define r (read))
+                (display "г.м.т. – коло радіуса ")
+                (display r)
+                (display " з центром ")
+                (display (cons (- a) (- b))))))
+        </pre>
+        <h4>Результат</h4>
+        <img src="images/lab5/5.png" alt="Завдання 2" />
+        <h2 class="left">Висновок</h2>
+        <p>
+          При виконанні лабораторної роботи створено функцію, для розв'язання задачі з простими дробами
+          із застосуванням попередньо створених функцій для роботи з простими дробами. Також створено
+          функцію, що визначає г.м.т комплексних чисел на основі заданого модуля або аргументу.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

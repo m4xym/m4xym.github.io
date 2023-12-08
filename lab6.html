@@ -1,0 +1,88 @@
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Лабораторна робота 4</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="main">
+      <h1 class="center">Функціональне програмування</h1>
+      <h2 class="center">Факультет інформаційних технологій</h2>
+      <h2 class="center">Кафедра програмних систем та технологій</h2>
+      <br /><br /><br />
+      <div class="box">
+        <h1 class="center">Лабораторна робота 6</h1>
+        <h2 class="center">
+            Обробка структур типу векторів і матриць, стеків та черг
+            мовами функціонального програмування
+        </h2>
+      </div>
+      <br /><br /><br />
+      <h2 class="right">Примачук Максим Григорович</h2>
+      <h2 class="right">Група: ІПЗ-44мс</h2>
+      <h2 class="right">Викладач: Ніколаєнко А.Ю.</h2>
+      <h2 class="center">2023</h2>
+      <br /><br /><br />
+      <div class="box">
+        <h2 class="left">Мета</h2>
+        <p>
+            Опанувати теоретичні основи обробки структур типу векторів і матриць, стеків та черг
+            мовами функціонального програмування та розробити програми їх реалізації
+        </p>
+        <h2 class="center">Варіант 8</h2>
+        <img src="images/lab6/1.png" alt="Варіант 8" />
+        <h2 class="left">Хід роботи</h2>
+        <h3 class="left">Завдання 1</h3>
+        <h4>Код</h4>
+        <a href="https://www.jdoodle.com/a/6XQJ">Посилання</a>
+        <pre>
+            #lang scheme
+
+            (define (most-repeated vec)
+            (let* ((counts (make-vector (vector-length vec) 0))
+                    (max-count 0)
+                    (max-index 0))
+                (do ((i 0 (+ i 1)))
+                    ((= i (vector-length vec)))
+                (let ((val (vector-ref vec i)))
+                    (do ((j 0 (+ j 1)))
+                        ((= j (vector-length vec)))
+                    (cond ((= val (vector-ref vec j))
+                            (vector-set! counts i (+ 1 (vector-ref counts i)))))))
+                (cond ((> (vector-ref counts i) max-count)
+                        (begin
+                        (set! max-count (vector-ref counts i))
+                        (set! max-index i)))))
+                (list max-index (vector-ref vec max-index))))
+
+            (define (count-occurrences vec)
+            (let ((counts (make-vector (vector-length vec) 0)))
+                (do ((i 0 (+ i 1)))
+                    ((= i (vector-length vec)))
+                (let ((val (vector-ref vec i)))
+                    (do ((j 0 (+ j 1)))
+                        ((= j (vector-length vec)))
+                    (cond ((= val (vector-ref vec j))
+                            (vector-set! counts i (+ 1 (vector-ref counts i))))))))
+                (do ((i 0 (+ i 1)))
+                    ((= i (vector-length vec)))
+                (display (list (vector-ref vec i) (vector-ref counts i)))
+                (newline))))
+
+            (count-occurrences '#(1 2 2 3 3 4 4 4 4 4))
+            (newline)
+            (newline)
+            (most-repeated '#(1 2 2 3 3 4 4 4 4 4))
+        </pre>
+        <h4>Результат</h4>
+        <img src="images/lab6/2.png" alt="Завдання 1" />
+        <h2 class="left">Висновок</h2>
+        <p>
+          При виконанні лабораторної роботи створено функцію, що повертає кількість входжень
+          до вектору значень кожного з його елементів. Також створено функцію, що повертає
+          індекс та значення елемента, яке повторюється найбільшу кількість разів.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
